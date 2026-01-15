@@ -70,7 +70,7 @@ func (m *Manager) CreateCluster() {
 		m.Log("存档名不能为空喵！")
 		return
 	}
-	
+
 	// Validate name (simple check)
 	if strings.Contains(name, "/") || strings.Contains(name, "\\") || strings.Contains(name, " ") {
 		m.Log("存档名包含非法字符或空格喵，请使用字母数字下划线~")
@@ -122,8 +122,8 @@ pvp = false
 pause_when_empty = true
 
 [NETWORK]
-cluster_name = New Go DST Server
-cluster_description = Created by DST Manager
+cluster_name = New DST Server
+cluster_description =  
 cluster_intention = cooperative
 
 [MISC]
@@ -160,7 +160,7 @@ master_server_port = 27015
 id = 2
 `
 	os.WriteFile(filepath.Join(clusterPath, "Caves", "server.ini"), []byte(cavesIni), 0644)
-	
+
 	// Create worldgenoverride.lua for Caves (essential for caves to work properly)
 	cavesOverride := `return {
     override_enabled = true,
@@ -180,7 +180,7 @@ func (m *Manager) DeleteCluster() {
 
 	confirm := utils.ReadInput(fmt.Sprintf("真的要删除存档 %s 吗？删除后找不回来的喵！(y/n): ", cluster))
 	if strings.ToLower(confirm) != "y" {
-		m.Log("吓死宝宝了，还好没删喵~")
+		m.Log("呜呜呜，还人家好没删喵~")
 		return
 	}
 

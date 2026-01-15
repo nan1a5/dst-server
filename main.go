@@ -70,7 +70,7 @@ func main() {
 
 func printMenu() {
 	fmt.Println("\n============== 功能菜单 ==============")
-	fmt.Println("  1. 安装/更新环境 (依赖+SteamCMD+DST)")
+	fmt.Println("  1. 安装/更新环境")
 	fmt.Println("  2. 启动服务器")
 	fmt.Println("  3. 停止服务器")
 	fmt.Println("  4. 重启服务器")
