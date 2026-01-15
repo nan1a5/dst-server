@@ -25,8 +25,10 @@ go build -o dst-manager main.go
 
 或者在 Windows 上交叉编译 (目标为 Linux):
 
+**重要：建议禁用 CGO 以避免兼容性问题 (Segmentation fault)**
+
 ```powershell
-$env:GOOS="linux"; $env:GOARCH="amd64"; go build -o dst-manager main.go
+$env:CGO_ENABLED="0"; $env:GOOS="linux"; $env:GOARCH="amd64"; go build -o dst-manager main.go
 ```
 
 ### 2. 运行

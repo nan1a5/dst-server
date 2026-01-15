@@ -8,8 +8,15 @@ import (
 )
 
 func main() {
+	// Catch potential panics
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Printf("\n!!! 小花酱晕倒了喵 (Panic) !!!\n错误信息: %v\n", r)
+		}
+	}()
+
 	mgr := manager.NewManager()
-	
+
 	fmt.Println("========================================")
 	mgr.Log("欢迎使用饥荒联机版服务器管理助手喵！")
 	mgr.Log("我是小花酱，会帮主人管理服务器哦~")
@@ -46,7 +53,7 @@ func main() {
 		default:
 			mgr.Log("看不懂这个指令喵，请重新输入~")
 		}
-		
+
 		fmt.Println("\n按回车键继续喵...")
 		utils.ReadInput("")
 	}
