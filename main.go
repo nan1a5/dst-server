@@ -43,6 +43,7 @@ func main() {
 			mgr.StopServer()
 			mgr.StartServer()
 		case "5":
+			// mgr.BackupCluster()
 			name := utils.ReadInput("请输入备份文件名喵: ")
 			if name == "" {
 				timestamp := time.Now().Format("20070831_162739")
@@ -53,6 +54,8 @@ func main() {
 			mgr.ListBackups()
 		case "7":
 			mgr.RestoreBackup()
+		case "8":
+			mgr.ManageClusters()
 		case "0":
 			mgr.Log("好的喵，小花酱先退下了，主人要注意休息哦~")
 			os.Exit(0)
@@ -74,6 +77,7 @@ func printMenu() {
 	fmt.Println("  5. 备份存档")
 	fmt.Println("  6. 查看备份列表")
 	fmt.Println("  7. 恢复存档")
+	fmt.Println("  8. 存档管理")
 	fmt.Println("  0. 退出")
 	fmt.Println("======================================")
 }

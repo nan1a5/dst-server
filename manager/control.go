@@ -20,6 +20,13 @@ func (m *Manager) StartServer() {
 		return
 	}
 
+	// Select Cluster
+	cluster := m.SelectCluster("请选择要启动的存档喵:")
+	if cluster == "" {
+		return
+	}
+	m.Log("即将启动存档: %s", cluster)
+
 	// Executable path
 	// 64-bit executable is standard now
 	binPath := filepath.Join(m.Config.DSTInstallDir, "bin64", "dontstarve_dedicated_server_nullrenderer_x64")
@@ -30,18 +37,18 @@ func (m *Manager) StartServer() {
 
 	// We launch Master and Caves separately
 	// 启动 Master
-	m.startShard(binPath, "Master")
+	m.startShard(binPath, cluster, "Master")
 
 	// 启动 Caves
-	m.startShard(binPath, "Caves")
+	m.startShard(binPath, cluster, "Caves")
 
 	m.Log("服务器启动指令已发送！可以用 screen -ls 查看后台进程喵~")
 }
 
-func (m *Manager) startShard(binPath, shardName string) {
+func (m *Manager) startShard(binPath, clusterName, shardName string) {
 	screenName := fmt.Sprintf("dst_%s", shardName)
-	cmd := fmt.Sprintf("cd %s && %s -console -cluster Cluster_1 -shard %s",
-		filepath.Dir(binPath), binPath, shardName)
+	cmd := fmt.Sprintf("cd %s && %s -console -cluster %s -shard %s",
+		filepath.Dir(binPath), binPath, clusterName, shardName)
 
 	// Use screen to run in background
 	// screen -dmS <name> <command>
