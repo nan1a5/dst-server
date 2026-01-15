@@ -27,7 +27,7 @@ func NewConfig() *Config {
 	return &Config{
 		HomeDir:       home,
 		SteamCMDDir:   filepath.Join(home, "steamcmd"),
-		DSTInstallDir: filepath.Join(home, "dst-server"),
+		DSTInstallDir: filepath.Join(home, "dst"),
 		ClusterDir:    filepath.Join(home, ".klei", "DoNotStarveTogether"),
 		BackupDir:     filepath.Join(home, "dst-backups"),
 	}

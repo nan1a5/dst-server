@@ -31,7 +31,7 @@ func (m *Manager) StartServer() {
 	// We launch Master and Caves separately
 	// 启动 Master
 	m.startShard(binPath, "Master")
-	
+
 	// 启动 Caves
 	m.startShard(binPath, "Caves")
 
@@ -40,9 +40,9 @@ func (m *Manager) StartServer() {
 
 func (m *Manager) startShard(binPath, shardName string) {
 	screenName := fmt.Sprintf("dst_%s", shardName)
-	cmd := fmt.Sprintf("cd %s && %s -console -cluster Cluster_1 -shard %s", 
+	cmd := fmt.Sprintf("cd %s && %s -console -cluster Cluster_1 -shard %s",
 		filepath.Dir(binPath), binPath, shardName)
-	
+
 	// Use screen to run in background
 	// screen -dmS <name> <command>
 	err := utils.RunCommand("screen", "-dmS", screenName, "bash", "-c", cmd)
@@ -57,11 +57,27 @@ func (m *Manager) startShard(binPath, shardName string) {
 // 停止服务器
 func (m *Manager) StopServer() {
 	m.Log("正在停止服务器，会保存存档喵...")
-	
+
 	m.stopShard("Master")
 	m.stopShard("Caves")
-	
+
 	m.Log("服务器已停止，休息一下吧主人~")
+}
+
+func (m *Manager) StopMaster() {
+	m.Log("正在停止地面服务器，会保存存档喵...")
+
+	m.stopShard("Master")
+
+	m.Log("地面服务器已停止，休息一下吧主人~")
+}
+
+func (m *Manager) StopCaves() {
+	m.Log("正在停止洞穴服务器，会保存存档喵...")
+
+	m.stopShard("Caves")
+
+	m.Log("洞穴服务器已停止，休息一下吧主人~")
 }
 
 func (m *Manager) stopShard(shardName string) {
@@ -69,7 +85,7 @@ func (m *Manager) stopShard(shardName string) {
 	// Send c_shutdown(true) to save and exit
 	// screen -S <name> -p 0 -X stuff "c_shutdown(true)\n"
 	cmd := "c_shutdown(true)\n"
-	
+
 	// Check if screen exists first
 	out, _ := utils.RunCommandOutput("screen", "-ls")
 	if !strings.Contains(out, screenName) {
@@ -79,7 +95,7 @@ func (m *Manager) stopShard(shardName string) {
 
 	m.Log("正在向 %s 发送关闭指令...", shardName)
 	utils.RunCommand("screen", "-S", screenName, "-p", "0", "-X", "stuff", cmd)
-	
+
 	// Wait a bit
 	time.Sleep(3 * time.Second)
 }

@@ -81,19 +81,32 @@ func (m *Manager) InstallDST() error {
 	steamCmdPath := filepath.Join(m.Config.SteamCMDDir, "steamcmd.sh")
 	installDir := m.Config.DSTInstallDir
 
-	// cmd: ./steamcmd.sh +force_install_dir <path> +login anonymous +app_update 343050 validate +quit
-	args := []string{
-		"+force_install_dir", installDir,
-		"+login", "anonymous",
-		"+app_update", "343050", "validate",
-		"+quit",
+	// Retry loop
+	maxRetries := 3
+	for i := 0; i < maxRetries; i++ {
+		if i > 0 {
+			m.Log("安装失败了，正在尝试第 %d 次重试喵...", i+1)
+		}
+
+		// cmd: ./steamcmd.sh +force_install_dir <path> +login anonymous +app_update 343050 validate +quit
+		// Note: Sometimes running login first separately helps
+		args := []string{
+			"+force_install_dir", installDir,
+			"+login", "anonymous",
+			"+app_update", "343050", "validate",
+			"+quit",
+		}
+
+		err := utils.RunCommand(steamCmdPath, args...)
+		if err == nil {
+			m.Log("饥荒联机版服务端安装/更新完成！可以开始冒险了喵！")
+			return nil
+		}
+		
+		m.Log("安装 DST 服务端出错: %v", err)
 	}
 
-	if err := utils.RunCommand(steamCmdPath, args...); err != nil {
-		m.Log("安装 DST 服务端失败了喵: %v", err)
-		return err
-	}
-
-	m.Log("饥荒联机版服务端安装/更新完成！可以开始冒险了喵！")
-	return nil
+	m.Log("呜呜...重试了 %d 次还是失败了喵。", maxRetries)
+	m.Log("如果错误是 'Missing configuration'，请确认您的服务器架构是否为 x86/amd64。")
+	return fmt.Errorf("安装失败")
 }

@@ -5,6 +5,7 @@ import (
 	"dst-manager/utils"
 	"fmt"
 	"os"
+	"time"
 )
 
 func main() {
@@ -42,7 +43,12 @@ func main() {
 			mgr.StopServer()
 			mgr.StartServer()
 		case "5":
-			mgr.BackupCluster()
+			name := utils.ReadInput("请输入备份文件名喵: ")
+			if name == "" {
+				timestamp := time.Now().Format("20070831_162739")
+				name = fmt.Sprintf("backup_%s.tar.gz", timestamp)
+			}
+			mgr.BackupCluster(name)
 		case "6":
 			mgr.ListBackups()
 		case "7":

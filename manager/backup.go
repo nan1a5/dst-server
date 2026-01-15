@@ -7,12 +7,11 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"time"
 )
 
 // BackupCluster creates a backup of the cluster
 // 备份存档
-func (m *Manager) BackupCluster() {
+func (m *Manager) BackupCluster(filename string) {
 	m.Log("开始备份存档，请稍候喵...")
 
 	// Create backup dir
@@ -21,14 +20,12 @@ func (m *Manager) BackupCluster() {
 		return
 	}
 
-	timestamp := time.Now().Format("20060102_150405")
-	filename := fmt.Sprintf("backup_%s.tar.gz", timestamp)
 	backupPath := filepath.Join(m.Config.BackupDir, filename)
 
 	// Target: ~/.klei/DoNotStarveTogether/Cluster_1
 	// We backup the whole Cluster_1 folder
 	clusterPath := filepath.Join(m.Config.ClusterDir, "Cluster_1")
-	
+
 	if _, err := os.Stat(clusterPath); os.IsNotExist(err) {
 		m.Log("找不到存档目录喵: %s", clusterPath)
 		return
@@ -60,7 +57,7 @@ func (m *Manager) ListBackups() []string {
 			backups = append(backups, entry.Name())
 		}
 	}
-	
+
 	// Sort reverse (newest first)
 	sort.Sort(sort.Reverse(sort.StringSlice(backups)))
 
