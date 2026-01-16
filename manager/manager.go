@@ -1,20 +1,21 @@
 package manager
 
 import (
+	"dst-manager/config"
 	"fmt"
 )
 
 // Manager handles the DST server operations
 // 管理器结构体
 type Manager struct {
-	Config *Config
+	Config *config.Config
 }
 
 // NewManager creates a new Manager instance
 // 创建新的管理器实例
 func NewManager() *Manager {
 	return &Manager{
-		Config: NewConfig(),
+		Config: config.NewConfig(),
 	}
 }
 

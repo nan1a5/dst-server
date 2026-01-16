@@ -11,19 +11,19 @@ import (
 
 // StartServer starts the DST server in a screen session
 // 启动服务器
-func (m *Manager) StartServer() {
+func (m *Manager) StartServer() error {
 	m.Log("正在启动服务器，请稍候喵...")
 
 	// Check if already running
 	if m.IsRunning() {
 		m.Log("服务器已经在运行了喵！不要重复启动哦~")
-		return
+		return fmt.Errorf("服务器已经在运行了喵！不要重复启动哦~")
 	}
 
 	// Select Cluster
 	cluster := m.SelectCluster("请选择要启动的存档喵:")
 	if cluster == "" {
-		return
+		return fmt.Errorf("请选择要启动的存档喵~")
 	}
 	m.Log("即将启动存档: %s", cluster)
 
@@ -43,6 +43,7 @@ func (m *Manager) StartServer() {
 	m.startShard(binPath, cluster, "Caves")
 
 	m.Log("服务器启动指令已发送！可以用 screen -ls 查看后台进程喵~")
+	return nil
 }
 
 func (m *Manager) startShard(binPath, clusterName, shardName string) {
